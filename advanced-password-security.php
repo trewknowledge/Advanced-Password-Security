@@ -89,6 +89,22 @@ final class Advanced_Password_Security {
 	        )
 	    );
 	}
+
+	private function ajax() {
+		add_action( 'wp_ajax_nopriv_reset-all-passwords', 	array( $this, 'reset_all_users' ) );
+		add_action( 'wp_ajax_reset-all-passwords', 			array( $this, 'reset_all_users' ) );		
+	}
+
+	public static function reset_all_users() {
+		check_ajax_referer( 'aps-ticket', 'ticket' );
+		$users = get_users( array( 'fields' => array( 'ID', 'user_pass' ) ) );
+		foreach ( $users as $user ) {
+			update_user_meta( $user->ID, self::META_KEY, 1 );
+		}
+
+		WP_Session_Tokens::destroy_all_for_all_users();
+	    wp_logout();
+		wp_die();
 	}
 
 	/**
