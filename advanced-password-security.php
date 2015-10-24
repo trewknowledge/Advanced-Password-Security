@@ -92,8 +92,13 @@ final class Advanced_Password_Security {
 	}
 
 	public function init() {
-		register_activation_hook( __FILE__, array( $this, 'activation' ) );
 		self::i18n();
+
+		new Advanced_Password_Security\Login;
+
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
 
 		new Advanced_Password_Security\Settings;
 	}
