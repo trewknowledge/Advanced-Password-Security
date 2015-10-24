@@ -208,6 +208,20 @@ final class Advanced_Password_Security {
 		return isset( $options['save_old_passwords'] ) ? true : false;
 	}
 
+	public static function get_countdown( $user = null ) {
+		if ( is_int( $user ) ) {
+			$user_id = $user;
+		}else if ( is_a( $user, 'WP_User' ) ) {
+			$user_id = $user->ID;
+		}else{
+			$user_id = wp_get_current_user()->ID;
+		}
+
+		$expires = self::get_expiration_date( $user_id );
+		$diff = $expires - time();
+		return floor( $diff / ( 60 * 60 * 24 ) );
+	}
+
 }
 
 Advanced_Password_Security::instance();
