@@ -45,25 +45,27 @@ class Login {
 				return;
 			}
 
-			$used_passwords = APS::get_old_passwords( $user );
+			if ( APS::should_save_old_passwords() ) {
+				$used_passwords = APS::get_old_passwords( $user );
 
-			foreach ($used_passwords as $old_pass) {
-				if ( wp_check_password( $new_pass, $old_pass['pass'], $user->ID ) ) {
-					$errors->add( 'password_already_used', __( 'You cannot reuse a password that you used in the past.', APS_TEXTDOMAIN ) );
-					$errors->add( 'password_already_used', sprintf( __( 'You used this password back in %s.', APS_TEXTDOMAIN ), $old_pass['created'] ) );
-					return;
+				foreach ($used_passwords as $old_pass) {
+					if ( wp_check_password( $new_pass, $old_pass['pass'], $user->ID ) ) {
+						$errors->add( 'password_already_used', __( 'You cannot reuse a password that you used in the past.', APS_TEXTDOMAIN ) );
+						$errors->add( 'password_already_used', sprintf( __( 'You used this password back in %s.', APS_TEXTDOMAIN ), $old_pass['created'] ) );
+						return;
+					}
 				}
+
+				global $wpdb;
+				$hash = wp_hash_password( $new_pass );
+				$created = date('F jS, Y');
+				array_push( $used_passwords, array( 'pass' => $hash, 'created' => $created ) );
+				$used_passwords = maybe_serialize( $used_passwords );
+
+			    $wpdb->update( $wpdb->users, array( 'old_user_pass' => $used_passwords ), array( 'ID' => $user->ID ) );
+			 
+				update_user_meta( $user->ID, APS::META_KEY, gmdate( "U" ) );			
 			}
-
-			global $wpdb;
-			$hash = wp_hash_password( $new_pass );
-			$created = date('F jS, Y');
-			array_push( $used_passwords, array( 'pass' => $hash, 'created' => $created ) );
-			$used_passwords = maybe_serialize( $used_passwords );
-
-		    $wpdb->update( $wpdb->users, array( 'old_user_pass' => $used_passwords ), array( 'ID' => $user->ID ) );
-		 
-			update_user_meta( $user->ID, APS::META_KEY, gmdate( "U" ) );			
 		}
 	}
 
