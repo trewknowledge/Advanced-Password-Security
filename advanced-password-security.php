@@ -137,6 +137,11 @@ final class Advanced_Password_Security {
 			);			
 		}
 	}
+
+	public static function get_limit() {
+		$options = get_option( self::$prefix . 'settings' );
+		return absint( $options['limit'] );
+	}
 	}
 
 }
