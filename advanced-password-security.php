@@ -66,9 +66,29 @@ final class Advanced_Password_Security {
 			}
 		}
 
-		register_activation_hook( __FILE__, array( $this, 'activation' ) );
+		$this->hooks();
 
-		add_action( 'init', array( $this, 'init' ) );
+	}
+
+	private function hooks() {
+		register_activation_hook( __FILE__, 	array( $this, 'activation' ) );
+		add_action( 'wp_enqueue_scripts',		array( $this, 'load_assets' ) );
+		add_action( 'admin_enqueue_scripts',	array( $this, 'load_assets' ) );
+		add_action( 'init', 					array( $this, 'init' ) );
+		$this->ajax();
+	}
+
+	public function load_assets() {
+		wp_enqueue_style( 'aps_css_style', 	APS_URL . 'assets/css/advanced-password-security.css' );
+		wp_enqueue_script( 'aps_js', 		APS_URL . 'assets/js/advanced-password-security.js', array( 'jquery' ), false, true );
+
+		wp_localize_script( 'aps_js', 'APS_Ajax', array(
+		        'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		        'loginurl' => wp_login_url(),
+		        'ajaxnonce' => wp_create_nonce( 'aps-ticket' )
+	        )
+	    );
+	}
 	}
 
 	/**
