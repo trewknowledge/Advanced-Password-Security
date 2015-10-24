@@ -109,12 +109,29 @@ final class Advanced_Password_Security {
 	}
 
 	function create_db_table_column(){
-		$this->db->query(
+		$sql = $this->db->prepare(
 			"
-			ALTER TABLE {$this->db->users}
-			ADD old_user_pass LONGTEXT
-			"
+			SELECT COLUMN_NAME
+			FROM INFORMATION_SCHEMA.COLUMNS
+			WHERE table_name = %s
+			AND table_schema = %s
+			AND column_name = %s
+			",
+			$this->db->users,
+			$this->db->dbname,
+			'old_user_pass'
 		);
+
+		$column_exists = $this->db->get_var($sql);
+		if ( empty($column_exists) ) {
+			$this->db->query(
+				"
+				ALTER TABLE {$this->db->users}
+				ADD old_user_pass LONGTEXT
+				"
+			);			
+		}
+	}
 	}
 
 }
