@@ -14,12 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'APS_PLUGIN', plugin_basename( __FILE__ ) );
-define( 'APS_DIR', plugin_dir_path( __FILE__ ) );
-define( 'APS_URL', plugin_dir_url( __FILE__ ) );
-define( 'APS_INC_DIR', APS_DIR . 'includes/' );
-define( 'APS_TEXTDOMAIN', 'tk-advanced-password-security' );
-define( 'APS_LANG_PATH', dirname( APS_PLUGIN ) . '/languages' );
+define( 'APS_PLUGIN', 		plugin_basename( __FILE__ ) );
+define( 'APS_DIR', 			plugin_dir_path( __FILE__ ) );
+define( 'APS_URL', 			plugin_dir_url( __FILE__ ) );
+define( 'APS_INC_DIR',		APS_DIR . 'includes/' );
+define( 'APS_TEXTDOMAIN', 	'tk-advanced-password-security' );
+define( 'APS_LANG_PATH', 	dirname( APS_PLUGIN ) . '/languages' );
 
 final class Advanced_Password_Security {
 
