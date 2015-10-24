@@ -20,6 +20,10 @@ class Settings {
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_counter' ), 999 );
 	}
 
+	public function admin_enqueue_scripts() {
+		wp_enqueue_style( 'aps_admin_bar_style', APS_URL . 'assets/css/advanced-password-security.css' );
+	}
+
 	public function admin_bar_counter( $wp_admin_bar ) {
 		$limit = APS::get_limit();
 		$countdown = APS::get_countdown();
