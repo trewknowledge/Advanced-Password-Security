@@ -183,6 +183,22 @@ final class Advanced_Password_Security {
 		return ( time() > $expires );
 	}
 
+	public static function get_old_passwords( $user ) {
+		if ( is_int( $user ) ) {
+			$userObj = get_userdata( $user );
+		}else if ( is_a( $user, 'WP_User' ) ) {
+			$userObj = $user;
+		}else{
+			$userObj = get_current_user();
+		}
+
+		$used_passwords = maybe_unserialize( $userObj->data->old_user_pass );
+
+		if ( !empty( $used_passwords ) && is_array( $used_passwords ) ) {
+			return $used_passwords;
+		}
+
+		return array();
 	}
 
 }
