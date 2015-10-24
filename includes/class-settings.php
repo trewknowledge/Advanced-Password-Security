@@ -68,6 +68,14 @@ class Settings {
 			APS::$prefix . 'settings_page',
 			APS::$prefix . 'settings_page_section'
 		);
+
+		add_settings_field(
+			APS::$prefix . 'settings_field_save_old_passwords',
+			esc_html__( 'Prevent users from using previously used passwords', APS_TEXTDOMAIN ),
+			array( $this, 'render_field_save_old_passwords' ),
+			APS::$prefix . 'settings_page',
+			APS::$prefix . 'settings_page_section'
+		);
 	}
 
 	public function render_section() {
@@ -85,6 +93,14 @@ class Settings {
 		<input type="number" min="1" max="365" maxlength="3" name="<?php printf( '%ssettings[limit]', APS::$prefix ) ?>" placeholder="<?php echo esc_attr( '30' ) ?>" value="<?php echo esc_attr( $value ) ?>">
 		<?php
 		esc_html_e( 'days', APS_TEXTDOMAIN );
+	}
+
+	public function render_field_save_old_passwords() {
+		$options = get_option( APS::$prefix . 'settings' );
+		$value   = isset( $options['save_old_passwords'] ) ? $options['save_old_passwords'] : null;
+		?>
+		<input type="checkbox" name="<?php printf( '%ssettings[save_old_passwords]', APS::$prefix ) ?>" <?php echo $value ? 'checked' : '' ?>>
+		<?php
 	}
 
 }
