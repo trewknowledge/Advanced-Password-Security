@@ -142,6 +142,26 @@ final class Advanced_Password_Security {
 		$options = get_option( self::$prefix . 'settings' );
 		return absint( $options['limit'] );
 	}
+
+	public static function get_expiration_date( $user = null ) {
+		if ( is_int( $user ) ) {
+			$user_id = $user;
+		}else if ( is_a( $user, 'WP_User' ) ) {
+			$user_id = $user->ID;
+		}else{
+			$user_id = get_current_user();
+		}
+		
+		if ( !get_userdata( $user_id ) ) {
+			return new WP_Error( 'User does not exist', esc_html__( 'User does not exist', APS_TEXTDOMAIN ) );
+		}
+
+		$last_reset = get_user_meta( $user_id, self::META_KEY, true );
+		$expires = strtotime( sprintf( '@%d + %d days', $last_reset, self::get_limit() ) );
+
+		return gmdate( 'U', $expires );
+	}
+
 	}
 
 }
