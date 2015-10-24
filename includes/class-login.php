@@ -67,4 +67,26 @@ class Login {
 		}
 	}
 
+	public function lost_password_message( $message ) {
+		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+		if ( 'lostpassword' !== $action ) {
+			return $message;
+		}
+		$limit = APS::get_limit();
+		$message = sprintf(
+			'<p id="login_error">%s</p><br><p>%s</p>',
+			sprintf(
+				_n(
+					'Your password must be reset every day.',
+					'Your password must be reset every %d days.',
+					$limit,
+					APS_TEXTDOMAIN
+				),
+				$limit
+			),
+			esc_html__( 'Please enter your username or e-mail below and a password reset link will be sent to you.', APS_TEXTDOMAIN )
+		);
+		return $message;
+	}
+
 }
