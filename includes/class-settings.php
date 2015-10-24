@@ -20,6 +20,34 @@ class Settings {
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_counter' ), 999 );
 	}
 
+	public function admin_bar_counter( $wp_admin_bar ) {
+		$limit = APS::get_limit();
+		$countdown = APS::get_countdown();
+
+		if ( $countdown < $limit / 5 ) {
+			$level = 'red';
+		}else if ( $countdown < $limit / 2 ) {
+			$level = 'yellow';
+		}else{
+			$level = 'green';
+		}
+
+		$args = array(
+			'id'    => 'aps_counter',
+			'title' => sprintf(
+				_n(
+					'%d day before password reset',
+					'%d days before password reset',
+					$countdown,
+					APS_TEXTDOMAIN
+				),
+				$countdown
+			),
+			'meta'  => array( "class" => "aps-counter-$level" )
+		);
+		$wp_admin_bar->add_node( $args );
+	}
+
 	public function submenu_page() {
 		add_users_page(
 			esc_html__( 'Advanced Password Security', APS_TEXTDOMAIN ),
