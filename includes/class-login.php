@@ -26,7 +26,7 @@ class Login {
 
 		$redirect = add_query_arg(
 			array(
-				'action'        => 'lostpassword',
+				'action' => 'lostpassword',
 			),
 			wp_login_url()
 		);
