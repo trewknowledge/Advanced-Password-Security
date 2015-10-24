@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Advanced_Password_Security as Plugin;
+use Advanced_Password_Security as APS;
 
 class Settings {
 
@@ -36,9 +36,9 @@ class Settings {
 
 			<form method="post" action="options.php">
 
-				<?php settings_fields( Plugin::$prefix . 'settings_page' ); ?>
+				<?php settings_fields( APS::$prefix . 'settings_page' ); ?>
 
-				<?php do_settings_sections( Plugin::$prefix . 'settings_page' ); ?>
+				<?php do_settings_sections( APS::$prefix . 'settings_page' ); ?>
 
 				<?php submit_button(); ?>
 
@@ -50,23 +50,23 @@ class Settings {
 
 	public function init() {
 		register_setting(
-			Plugin::$prefix . 'settings_page',
-			Plugin::$prefix . 'settings'
+			APS::$prefix . 'settings_page',
+			APS::$prefix . 'settings'
 		);
 
 		add_settings_section(
-			Plugin::$prefix . 'settings_page_section',
+			APS::$prefix . 'settings_page_section',
 			null,
 			array( $this, 'render_section' ),
-			Plugin::$prefix . 'settings_page'
+			APS::$prefix . 'settings_page'
 		);
 
 		add_settings_field(
-			Plugin::$prefix . 'settings_field_limit',
+			APS::$prefix . 'settings_field_limit',
 			esc_html__( 'Require a new password every', APS_TEXTDOMAIN ),
 			array( $this, 'render_field_limit' ),
-			Plugin::$prefix . 'settings_page',
-			Plugin::$prefix . 'settings_page_section'
+			APS::$prefix . 'settings_page',
+			APS::$prefix . 'settings_page_section'
 		);
 	}
 
@@ -79,10 +79,10 @@ class Settings {
 	}
 
 	public function render_field_limit() {
-		$options = get_option( Plugin::$prefix . 'settings' );
+		$options = get_option( APS::$prefix . 'settings' );
 		$value   = isset( $options['limit'] ) ? $options['limit'] : null;
 		?>
-		<input type="number" min="1" max="365" maxlength="3" name="<?php printf( '%ssettings[limit]', Plugin::$prefix ) ?>" placeholder="<?php echo esc_attr( '30' ) ?>" value="<?php echo esc_attr( $value ) ?>">
+		<input type="number" min="1" max="365" maxlength="3" name="<?php printf( '%ssettings[limit]', APS::$prefix ) ?>" placeholder="<?php echo esc_attr( '30' ) ?>" value="<?php echo esc_attr( $value ) ?>">
 		<?php
 		esc_html_e( 'days', APS_TEXTDOMAIN );
 	}
