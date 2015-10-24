@@ -66,7 +66,9 @@ final class Advanced_Password_Security {
 			}
 		}
 
-		$this->init();
+		register_activation_hook( __FILE__, array( $this, 'activation' ) );
+
+		add_action( 'init', array( $this, 'init' ) );
 	}
 
 	/**
