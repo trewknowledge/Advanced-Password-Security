@@ -105,7 +105,7 @@ final class Advanced_Password_Security {
 
 	function activation() {
 		$this->create_db_table_column();
-		add_option( self::$prefix . 'settings', array( 'limit' => 30 ) );
+		add_option( self::$prefix . 'settings', array( 'limit' => 30, 'save_old_passwords' => true ) );
 		foreach ( $this->users as $user ) {
 			if ( !get_user_meta($user->ID, self::META_KEY, true ) ) {
 				add_user_meta( $user->ID, self::META_KEY, gmdate("U") );				
