@@ -162,6 +162,27 @@ final class Advanced_Password_Security {
 		return gmdate( 'U', $expires );
 	}
 
+	public static function is_password_expired( $user = null ) {
+		if ( is_int( $user ) ) {
+			$user_id = $user;
+		}else if ( is_a( $user, 'WP_User' ) ) {
+			$user_id = $user->ID;
+		}else{
+			$user_id = get_current_user();
+		}
+
+		if ( !get_userdata( $user_id ) ) {
+			return new WP_Error( 'User does not exist', esc_html__( 'User does not exist', APS_TEXTDOMAIN ) );
+		}
+
+		$time = get_user_meta( $user_id, self::META_KEY, true );
+		$limit = self::get_limit();
+		
+		$expires = self::get_expiration_date( $user_id );
+
+		return ( time() > $expires );
+	}
+
 	}
 
 }
