@@ -64,7 +64,7 @@ class Login {
 
 			    $wpdb->update( $wpdb->users, array( 'old_user_pass' => $used_passwords ), array( 'ID' => $user->ID ) );
 			 
-				update_user_meta( $user->ID, APS::META_KEY, gmdate( "U" ) );			
+				update_user_meta( $user->ID, APS::META_KEY, date( "U" ) );			
 			}
 		}
 	}

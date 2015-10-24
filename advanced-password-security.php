@@ -108,7 +108,7 @@ final class Advanced_Password_Security {
 		add_option( self::$prefix . 'settings', array( 'limit' => 30, 'save_old_passwords' => true ) );
 		foreach ( $this->users as $user ) {
 			if ( !get_user_meta($user->ID, self::META_KEY, true ) ) {
-				add_user_meta( $user->ID, self::META_KEY, gmdate("U") );				
+				add_user_meta( $user->ID, self::META_KEY, date("U") );				
 			}
 		}
 	}
@@ -159,7 +159,7 @@ final class Advanced_Password_Security {
 		$last_reset = get_user_meta( $user_id, self::META_KEY, true );
 		$expires = strtotime( sprintf( '@%d + %d days', $last_reset, self::get_limit() ) );
 
-		return gmdate( 'U', $expires );
+		return date( 'U', $expires );
 	}
 
 	public static function is_password_expired( $user = null ) {
