@@ -149,7 +149,7 @@ final class Advanced_Password_Security {
 		}else if ( is_a( $user, 'WP_User' ) ) {
 			$user_id = $user->ID;
 		}else{
-			$user_id = get_current_user();
+			$user_id = wp_get_current_user()->ID;
 		}
 		
 		if ( !get_userdata( $user_id ) ) {
@@ -168,7 +168,7 @@ final class Advanced_Password_Security {
 		}else if ( is_a( $user, 'WP_User' ) ) {
 			$user_id = $user->ID;
 		}else{
-			$user_id = get_current_user();
+			$user_id = wp_get_current_user()->ID;
 		}
 
 		if ( !get_userdata( $user_id ) ) {
@@ -189,7 +189,7 @@ final class Advanced_Password_Security {
 		}else if ( is_a( $user, 'WP_User' ) ) {
 			$userObj = $user;
 		}else{
-			$userObj = get_current_user();
+			$userObj = wp_get_current_user();
 		}
 
 		$used_passwords = maybe_unserialize( $userObj->data->old_user_pass );
