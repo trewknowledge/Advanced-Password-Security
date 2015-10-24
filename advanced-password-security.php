@@ -98,12 +98,12 @@ final class Advanced_Password_Security {
 		new Advanced_Password_Security\Settings;
 	}
 
-	public function activation() {
+	function activation() {
 		$this->create_db_table_column();
 		add_option( self::$prefix . 'settings', array( 'limit' => 30 ) );
 		foreach ( $this->users as $user ) {
 			if ( !get_user_meta($user->ID, self::META_KEY, true ) ) {
-				add_user_meta( $user->ID, self::META_KEY, gmdate("Y-m-d") );				
+				add_user_meta( $user->ID, self::META_KEY, gmdate("U") );				
 			}
 		}
 	}
