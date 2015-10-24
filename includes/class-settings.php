@@ -20,31 +20,42 @@ class Settings {
 	}
 
 	public function admin_bar_counter( $wp_admin_bar ) {
-		$limit = APS::get_limit();
-		$countdown = APS::get_countdown();
+		if ( current_user_can( 'manage_options' ) ) {
+			$limit = APS::get_limit();
+			$countdown = APS::get_countdown();
 
-		if ( $countdown < $limit / 5 ) {
-			$level = 'red';
-		}else if ( $countdown < $limit / 2 ) {
-			$level = 'yellow';
-		}else{
-			$level = 'green';
-		}
+			if ( $countdown < $limit / 5 ) {
+				$level = 'red';
+			}else if ( $countdown < $limit / 2 ) {
+				$level = 'yellow';
+			}else{
+				$level = 'green';
+			}
 
-		$args = array(
-			'id'    => 'aps_counter',
-			'title' => sprintf(
-				_n(
-					'%d day before password reset',
-					'%d days before password reset',
-					$countdown,
-					APS_TEXTDOMAIN
+			$args = array(
+				'id'    => 'aps_counter',
+				'title' => sprintf(
+					_n(
+						'%d day before password reset',
+						'%d days before password reset',
+						$countdown,
+						APS_TEXTDOMAIN
+					),
+					$countdown
 				),
-				$countdown
-			),
-			'meta'  => array( "class" => "aps-counter-$level" )
-		);
-		$wp_admin_bar->add_node( $args );
+				'parent' => 'top-secondary',
+				'meta'  => array( "class" => "aps-counter-$level" )
+			);
+			$wp_admin_bar->add_node( $args );
+
+			$args = array(
+				'id'    => 'aps_reset_all',
+				'title' => __( 'Reset all passwords', APS_TEXTDOMAIN ),
+				'parent' => 'aps_counter',
+				'href' => '#',
+			);
+			$wp_admin_bar->add_node( $args );
+		}
 	}
 
 	public function submenu_page() {
@@ -105,6 +116,13 @@ class Settings {
 			APS::$prefix . 'settings_page',
 			APS::$prefix . 'settings_page_section'
 		);
+		add_settings_field(
+			APS::$prefix . 'settings_field_reset_all_users',
+			esc_html__( 'Reset all users password', APS_TEXTDOMAIN ),
+			array( $this, 'render_field_reset_all_users' ),
+			APS::$prefix . 'settings_page',
+			APS::$prefix . 'settings_page_section'
+		);
 	}
 
 	public function render_section() {
@@ -129,6 +147,12 @@ class Settings {
 		$value   = isset( $options['save_old_passwords'] ) ? $options['save_old_passwords'] : null;
 		?>
 		<input type="checkbox" name="<?php printf( '%ssettings[save_old_passwords]', APS::$prefix ) ?>" <?php echo $value ? 'checked' : '' ?>>
+		<?php
+	}
+
+	public function render_field_reset_all_users() {
+		?>
+		<input type="button" value="<?php _e( 'RESET ALL USERS', APS_TEXTDOMAIN ); ?>" id="reset_all_users_settings_button" class="button">
 		<?php
 	}
 
