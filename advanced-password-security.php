@@ -75,6 +75,7 @@ final class Advanced_Password_Security {
 		add_action( 'wp_enqueue_scripts',		array( $this, 'load_assets' ) );
 		add_action( 'admin_enqueue_scripts',	array( $this, 'load_assets' ) );
 		add_action( 'init', 					array( $this, 'init' ) );
+		add_action( 'user_register', 			array( $this, 'new_user_registration' ), 10, 1 );
 		$this->ajax();
 	}
 
@@ -143,9 +144,15 @@ final class Advanced_Password_Security {
 		$this->create_db_table_column();
 		add_option( self::$prefix . 'settings', array( 'limit' => 30, 'save_old_passwords' => true ) );
 		foreach ( $this->users as $user ) {
-			if ( !get_user_meta($user->ID, self::META_KEY, true ) ) {
-				add_user_meta( $user->ID, self::META_KEY, date("U") );				
+			if ( !get_user_meta( $user->ID, self::META_KEY, true ) ) {
+				add_user_meta( $user->ID, self::META_KEY, date( "U" ) );				
 			}
+		}
+	}
+
+	function new_user_registration( $user_id ) {
+		if ( !get_user_meta( $user_id, self::META_KEY, true ) ) {
+			add_user_meta( $user_id, self::META_KEY, date( "U" ) );				
 		}
 	}
 
