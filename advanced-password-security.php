@@ -92,7 +92,6 @@ final class Advanced_Password_Security {
 	}
 
 	private function ajax() {
-		add_action( 'wp_ajax_nopriv_reset-all-passwords', 	array( $this, 'reset_all_users' ) );
 		add_action( 'wp_ajax_reset-all-passwords', 			array( $this, 'reset_all_users' ) );		
 	}
 
