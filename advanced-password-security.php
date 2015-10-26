@@ -267,4 +267,6 @@ final class Advanced_Password_Security {
 
 }
 
-Advanced_Password_Security::instance();
+if ( class_exists( 'Advanced_Password_Security' ) ) {
+	Advanced_Password_Security::instance();
+}
