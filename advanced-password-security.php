@@ -245,7 +245,7 @@ final class Advanced_Password_Security {
 	}
 
 	public static function should_save_old_passwords() {
-		$options = get_option( APS::$prefix . 'settings' );
+		$options = get_option( self::$prefix . 'settings' );
 		$value   = isset( $options['save_old_passwords'] ) ? $options['save_old_passwords'] : null;
 
 		return isset( $options['save_old_passwords'] ) ? true : false;
