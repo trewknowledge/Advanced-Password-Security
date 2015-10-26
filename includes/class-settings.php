@@ -152,7 +152,7 @@ class Settings {
 
 	public function render_field_reset_all_users() {
 		?>
-		<input type="button" value="<?php _e( 'RESET ALL USERS', APS_TEXTDOMAIN ); ?>" id="reset_all_users_settings_button" class="button">
+		<input type="button" value="<?php _e( strtoupper( 'Reset all passwords' ), APS_TEXTDOMAIN ); ?>" id="reset_all_users_settings_button" class="button">
 		<?php
 	}
 
