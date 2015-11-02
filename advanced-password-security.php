@@ -71,12 +71,12 @@ final class Advanced_Password_Security {
 	}
 
 	private function hooks() {
-		register_activation_hook( __FILE__, 	array( $this, 'activation' ) );
-		add_action( 'wp_enqueue_scripts',		array( $this, 'load_assets' ) );
-		add_action( 'admin_enqueue_scripts',	array( $this, 'load_assets' ) );
-		add_action( 'init', 					array( $this, 'init' ) );
-		add_action( 'user_register', 			array( $this, 'new_user_registration' ), 10, 1 );
-		$this->ajax();
+		register_activation_hook( __FILE__, 		array( $this, 'activation' ) );
+		add_action( 'wp_enqueue_scripts',			array( $this, 'load_assets' ) );
+		add_action( 'admin_enqueue_scripts',		array( $this, 'load_assets' ) );
+		add_action( 'init', 						array( $this, 'init' ) );
+		add_action( 'user_register', 				array( $this, 'new_user_registration' ), 10, 1 );
+		add_action( 'wp_ajax_reset-all-passwords', 	array( $this, 'reset_all_users' ) );
 	}
 
 	public function load_assets() {
@@ -89,10 +89,6 @@ final class Advanced_Password_Security {
 		        'ajaxnonce' => wp_create_nonce( 'aps-ticket' )
 	        )
 	    );
-	}
-
-	private function ajax() {
-		add_action( 'wp_ajax_reset-all-passwords', 			array( $this, 'reset_all_users' ) );		
 	}
 
 	public static function reset_all_users() {
