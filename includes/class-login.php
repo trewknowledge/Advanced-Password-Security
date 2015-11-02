@@ -10,13 +10,22 @@ use Advanced_Password_Security as APS;
 
 class Login {
 
-	
+	/**
+	 * Class Constructor
+	 */
 	public function __construct(){
 		add_action( 'wp_login', array( $this, 'login' ), 10, 2 );
 		add_action( 'validate_password_reset', array( $this, 'validate_password' ), 10, 2 );
 		add_filter( 'login_message', array( $this, 'lost_password_message' ) );
 	}
 
+	/**
+	 * wp_login callback function
+	 * 
+	 * Checks if password is expired then redirects the user to the reset password page
+	 * @param  string  $user_login  Username
+	 * @param  WP_User $user        WP_User Object of the logged-in user
+	 */
 	public function login( $user_login, $user ) {
 		if ( !APS::is_password_expired( $user ) ) {
 			return;
@@ -34,6 +43,17 @@ class Login {
 		exit;
 	}
 
+	/**
+	 * Fired when user tries to save a new password.
+	 * 
+	 * This checks if the passwords match (In case the javascript is disabled a confirm password show up)
+	 * then if they match it checks if it should store the password in the users table.
+	 * If it should save, it will first check if the password that is being saved was not used
+	 * before and if it was not then it will update the database and update the last updated date
+	 * 
+	 * @param  WP_Error $errors Wordpress error Object
+	 * @param  WP_User 	$user   Wordpress user Object
+	 */
 	public function validate_password( $errors, $user ) {
 		$new_pass = isset( $_POST['pass1'] ) && $_POST['pass1'] ? $_POST['pass1'] : '';
 		$new_pass2 = isset( $_POST['pass2'] ) && $_POST['pass2'] ? $_POST['pass2'] : '';
@@ -69,6 +89,11 @@ class Login {
 		}
 	}
 
+	/**
+	 * Handles the error message when trying to log in
+	 * @param  string $message Login messages
+	 * @return string          Login message after changes
+	 */
 	public function lost_password_message( $message ) {
 		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
 		if ( 'lostpassword' !== $action ) {

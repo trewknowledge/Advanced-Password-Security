@@ -70,6 +70,9 @@ final class Advanced_Password_Security {
 
 	}
 
+	/**
+	 * Call various hooks
+	 */
 	private function hooks() {
 		register_activation_hook( __FILE__, 		array( $this, 'activation' ) );
 		add_action( 'wp_enqueue_scripts',			array( $this, 'load_assets' ) );
@@ -79,6 +82,9 @@ final class Advanced_Password_Security {
 		add_action( 'wp_ajax_reset-all-passwords', 	array( $this, 'reset_all_users' ) );
 	}
 
+	/**
+	 * Load CSS and JS files and localize the JS file with some variables.
+	 */
 	public function load_assets() {
 		wp_enqueue_style( 'aps_css_style', 	APS_URL . 'assets/css/advanced-password-security.css' );
 		wp_enqueue_script( 'aps_js', 		APS_URL . 'assets/js/advanced-password-security.js', array( 'jquery' ), false, true );
@@ -91,6 +97,9 @@ final class Advanced_Password_Security {
 	    );
 	}
 
+	/**
+	 * Ajax Callback that resets all users and logout
+	 */
 	public static function reset_all_users() {
 		check_ajax_referer( 'aps-ticket', 'ticket' );
 		$users = get_users( array( 'fields' => array( 'ID', 'user_pass' ) ) );
@@ -105,7 +114,6 @@ final class Advanced_Password_Security {
 
 	/**
 	 * Load translations
-	 * @return null
 	 */
 	public static function i18n() {
 		load_plugin_textdomain( APS_TEXTDOMAIN, false, APS_LANG_PATH );
@@ -113,7 +121,7 @@ final class Advanced_Password_Security {
 
 	/**
 	 * Get plugin instance
-	 * @return object
+	 * @return Object
 	 */
 	public static function instance() {
 		if ( !self::$_instance ) {
@@ -123,6 +131,9 @@ final class Advanced_Password_Security {
 		return self::$_instance;
 	}
 
+	/**
+	 * Loads Translations and instantiates the Login and Settings Classes
+	 */
 	public function init() {
 		self::i18n();
 
@@ -135,22 +146,38 @@ final class Advanced_Password_Security {
 		new Advanced_Password_Security\Settings;
 	}
 
+	/**
+	 * On plugin activation callback function.
+	 * This should call the database column creation, add default options
+	 * and set all existing users last updated date to the current time.
+	 */
 	function activation() {
 		$this->create_db_table_column();
 		add_option( self::$prefix . 'settings', array( 'limit' => 30, 'save_old_passwords' => true ) );
 		foreach ( $this->users as $user ) {
-			if ( !get_user_meta( $user->ID, self::META_KEY, true ) ) {
-				add_user_meta( $user->ID, self::META_KEY, date( "U" ) );				
+			if ( ! get_user_meta( $user->ID, self::META_KEY, true ) ) {
+				add_user_meta( $user->ID, self::META_KEY, date( "U" ) );
 			}
 		}
 	}
 
+	/**
+	 * New user registration callback function.
+	 * 
+	 * This should check if the user have the last updated date on the database
+	 * and in case it does not it should add with the current date.
+	 * @param int $user_id The User ID
+	 */	
 	function new_user_registration( $user_id ) {
 		if ( !get_user_meta( $user_id, self::META_KEY, true ) ) {
-			add_user_meta( $user_id, self::META_KEY, date( "U" ) );				
+			add_user_meta( $user_id, self::META_KEY, date( 'U' ) );
 		}
 	}
 
+	/**
+	 * Checks if wordpress users table have a column called 'old_user_pass'
+	 * and in case there is none it is created
+	 */
 	function create_db_table_column(){
 		$sql = $this->db->prepare(
 			"
@@ -176,11 +203,21 @@ final class Advanced_Password_Security {
 		}
 	}
 
+	/**
+	 * Get the limit of days until user is forced to change his password
+	 * @return Int
+	 */
 	public static function get_limit() {
 		$options = get_option( self::$prefix . 'settings' );
 		return absint( $options['limit'] );
 	}
 
+	/**
+	 * Get the actual date that a certain user will have to change their password
+	 * @param int|object $user It can be the user id or the user object. In case neither
+	 * are provided, then it gets the current user id.
+	 * @return Date
+	 */
 	public static function get_expiration_date( $user = null ) {
 		if ( is_int( $user ) ) {
 			$user_id = $user;
@@ -200,6 +237,12 @@ final class Advanced_Password_Security {
 		return date( 'U', $expires );
 	}
 
+	/**
+	 * Checks if the password is expired
+	 * @param int|object $user It can be the user id or the user object. In case neither
+	 * are provided, then it gets the current user id.
+	 * @return Boolean
+	 */
 	public static function is_password_expired( $user = null ) {
 		if ( is_int( $user ) ) {
 			$user_id = $user;
@@ -221,6 +264,13 @@ final class Advanced_Password_Security {
 		return ( time() > $expires );
 	}
 
+	/**
+	 * Checks if a certain user have old passwords stored in the database
+	 * and unserializes it
+	 * @param int|object $user It can be the user id or the user object. In case neither
+	 * are provided, then it gets the current user object.
+	 * @return Array
+	 */
 	public static function get_old_passwords( $user ) {
 		if ( is_int( $user ) ) {
 			$userObj = get_userdata( $user );
@@ -239,6 +289,10 @@ final class Advanced_Password_Security {
 		return array();
 	}
 
+	/**
+	 * Checks if the settings are setup to save old passwords in the database or not
+	 * @return Boolean
+	 */
 	public static function should_save_old_passwords() {
 		$options = get_option( self::$prefix . 'settings' );
 		$value   = isset( $options['save_old_passwords'] ) ? $options['save_old_passwords'] : null;
@@ -246,6 +300,12 @@ final class Advanced_Password_Security {
 		return isset( $options['save_old_passwords'] ) ? true : false;
 	}
 
+	/**
+	 * Get the time left until user have to change password.
+	 * @param int|object $user It can be the user id or the user object. In case neither
+	 * are provided, then it gets the current user id.
+	 * @return Int
+	 */
 	public static function get_countdown( $user = null ) {
 		if ( is_int( $user ) ) {
 			$user_id = $user;

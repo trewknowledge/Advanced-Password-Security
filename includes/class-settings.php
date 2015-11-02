@@ -19,6 +19,11 @@ class Settings {
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_counter' ), 999 );
 	}
 
+	/**
+	 * Check if user can manage options (admin) and display a counter on the admin bar
+	 * and a button for reseting all users passwords
+	 * @param Object $wp_admin_bar 
+	 */
 	public function admin_bar_counter( $wp_admin_bar ) {
 		if ( current_user_can( 'manage_options' ) ) {
 			$limit = APS::get_limit();
@@ -58,6 +63,9 @@ class Settings {
 		}
 	}
 
+	/**
+	 * Add a settings page under Users menu
+	 */
 	public function submenu_page() {
 		add_users_page(
 			esc_html__( 'Advanced Password Security', APS_TEXTDOMAIN ),
@@ -68,6 +76,9 @@ class Settings {
 		);
 	}
 
+	/**
+	 * Renders html markup on the plugin settings page
+	 */
 	public function render_settings_page() {
 		?>
 		<div class="wrap">
@@ -88,6 +99,11 @@ class Settings {
 		<?php
 	}
 
+	/**
+	 * Admin init callback function.
+	 * It registers all settings, sections and fields to be used on the plugin
+	 * settings page.
+	 */
 	public function init() {
 		register_setting(
 			APS::$prefix . 'settings_page',
@@ -125,6 +141,9 @@ class Settings {
 		);
 	}
 
+	/**
+	 * Renders Settings Section
+	 */
 	public function render_section() {
 		?>
 		<p>
@@ -133,6 +152,9 @@ class Settings {
 		<?php
 	}
 
+	/**
+	 * Render limit input field
+	 */
 	public function render_field_limit() {
 		$options = get_option( APS::$prefix . 'settings' );
 		$value   = isset( $options['limit'] ) ? $options['limit'] : null;
@@ -142,6 +164,9 @@ class Settings {
 		esc_html_e( 'days', APS_TEXTDOMAIN );
 	}
 
+	/**
+	 * Render should save old password checkbox
+	 */
 	public function render_field_save_old_passwords() {
 		$options = get_option( APS::$prefix . 'settings' );
 		$value   = isset( $options['save_old_passwords'] ) ? $options['save_old_passwords'] : null;
@@ -150,6 +175,9 @@ class Settings {
 		<?php
 	}
 
+	/**
+	 * Render reset all button
+	 */
 	public function render_field_reset_all_users() {
 		?>
 		<input type="button" value="<?php _e( strtoupper( 'Reset all passwords' ), APS_TEXTDOMAIN ); ?>" id="reset_all_users_settings_button" class="button">
