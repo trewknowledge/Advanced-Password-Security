@@ -22,7 +22,7 @@ class Settings {
 	/**
 	 * Check if user can manage options (admin) and display a counter on the admin bar
 	 * and a button for reseting all users passwords
-	 * @param Object $wp_admin_bar 
+	 * @param Object $wp_admin_bar
 	 */
 	public function admin_bar_counter( $wp_admin_bar ) {
 		if ( current_user_can( 'manage_options' ) ) {
@@ -31,9 +31,9 @@ class Settings {
 
 			if ( $countdown < $limit / 5 ) {
 				$level = 'red';
-			}else if ( $countdown < $limit / 2 ) {
+			} else if ( $countdown < $limit / 2 ) {
 				$level = 'yellow';
-			}else{
+			} else {
 				$level = 'green';
 			}
 
@@ -49,7 +49,7 @@ class Settings {
 					$countdown
 				),
 				'parent' => 'top-secondary',
-				'meta'  => array( "class" => "aps-counter-$level" )
+				'meta'  => array( 'class' => "aps-counter-$level" ),
 			);
 			$wp_admin_bar->add_node( $args );
 
@@ -159,7 +159,7 @@ class Settings {
 		$options = get_option( APS::$prefix . 'settings' );
 		$value   = isset( $options['limit'] ) ? $options['limit'] : null;
 		?>
-		<input type="number" min="1" max="365" maxlength="3" name="<?php printf( '%ssettings[limit]', APS::$prefix ) ?>" placeholder="<?php echo esc_attr( '30' ) ?>" value="<?php echo esc_attr( $value ) ?>">
+		<input type="number" min="1" max="365" maxlength="3" name="<?php printf( '%ssettings[limit]', esc_attr( APS::$prefix ) ) ?>" placeholder="<?php echo esc_attr( '30' ) ?>" value="<?php echo esc_attr( $value ) ?>">
 		<?php
 		esc_html_e( 'days', APS_TEXTDOMAIN );
 	}
@@ -171,7 +171,7 @@ class Settings {
 		$options = get_option( APS::$prefix . 'settings' );
 		$value   = isset( $options['save_old_passwords'] ) ? $options['save_old_passwords'] : null;
 		?>
-		<input type="checkbox" name="<?php printf( '%ssettings[save_old_passwords]', APS::$prefix ) ?>" <?php echo $value ? 'checked' : '' ?>>
+		<input type="checkbox" name="<?php printf( '%ssettings[save_old_passwords]', esc_attr( APS::$prefix ) ) ?>" <?php echo $value ? 'checked' : '' ?>>
 		<?php
 	}
 
@@ -180,8 +180,7 @@ class Settings {
 	 */
 	public function render_field_reset_all_users() {
 		?>
-		<input type="button" value="<?php _e( strtoupper( 'Reset all passwords' ), APS_TEXTDOMAIN ); ?>" id="reset_all_users_settings_button" class="button">
+		<input type="button" value="<?php esc_attr_e( strtoupper( 'Reset all passwords' ), APS_TEXTDOMAIN ); ?>" id="reset_all_users_settings_button" class="button">
 		<?php
 	}
-
 }

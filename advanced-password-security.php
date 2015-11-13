@@ -92,7 +92,7 @@ final class Advanced_Password_Security {
 		wp_localize_script( 'aps_js', 'APS_Ajax', array(
 		        'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		        'loginurl' => wp_login_url(),
-		        'ajaxnonce' => wp_create_nonce( 'aps-ticket' )
+		        'ajaxnonce' => wp_create_nonce( 'aps-ticket' ),
 	        )
 	    );
 	}
@@ -124,7 +124,7 @@ final class Advanced_Password_Security {
 	 * @return Object
 	 */
 	public static function instance() {
-		if ( !self::$_instance ) {
+		if ( ! self::$_instance ) {
 			self::$_instance = new self();
 		}
 
@@ -156,20 +156,20 @@ final class Advanced_Password_Security {
 		add_option( self::$prefix . 'settings', array( 'limit' => 30, 'save_old_passwords' => true ) );
 		foreach ( $this->users as $user ) {
 			if ( ! get_user_meta( $user->ID, self::META_KEY, true ) ) {
-				add_user_meta( $user->ID, self::META_KEY, date( "U" ) );
+				add_user_meta( $user->ID, self::META_KEY, date( 'U' ) );
 			}
 		}
 	}
 
 	/**
 	 * New user registration callback function.
-	 * 
+	 *
 	 * This should check if the user have the last updated date on the database
 	 * and in case it does not it should add with the current date.
 	 * @param int $user_id The User ID
-	 */	
+	 */
 	function new_user_registration( $user_id ) {
-		if ( !get_user_meta( $user_id, self::META_KEY, true ) ) {
+		if ( ! get_user_meta( $user_id, self::META_KEY, true ) ) {
 			add_user_meta( $user_id, self::META_KEY, date( 'U' ) );
 		}
 	}
@@ -178,28 +178,28 @@ final class Advanced_Password_Security {
 	 * Checks if wordpress users table have a column called 'old_user_pass'
 	 * and in case there is none it is created
 	 */
-	function create_db_table_column(){
+	function create_db_table_column() {
 		$sql = $this->db->prepare(
-			"
+			'
 			SELECT COLUMN_NAME
 			FROM INFORMATION_SCHEMA.COLUMNS
 			WHERE table_name = %s
 			AND table_schema = %s
 			AND column_name = %s
-			",
+			',
 			$this->db->users,
 			$this->db->dbname,
 			'old_user_pass'
 		);
 
-		$column_exists = $this->db->get_var($sql);
-		if ( empty($column_exists) ) {
+		$column_exists = $this->db->get_var( $sql );
+		if ( empty( $column_exists ) ) {
 			$this->db->query(
 				"
 				ALTER TABLE {$this->db->users}
 				ADD old_user_pass LONGTEXT
 				"
-			);			
+			);
 		}
 	}
 
@@ -221,13 +221,13 @@ final class Advanced_Password_Security {
 	public static function get_expiration_date( $user = null ) {
 		if ( is_int( $user ) ) {
 			$user_id = $user;
-		}else if ( is_a( $user, 'WP_User' ) ) {
+		} else if ( is_a( $user, 'WP_User' ) ) {
 			$user_id = $user->ID;
-		}else{
+		} else {
 			$user_id = wp_get_current_user()->ID;
 		}
-		
-		if ( !get_userdata( $user_id ) ) {
+
+		if ( ! get_userdata( $user_id ) ) {
 			return new WP_Error( 'User does not exist', esc_html__( 'User does not exist', APS_TEXTDOMAIN ) );
 		}
 
@@ -246,19 +246,19 @@ final class Advanced_Password_Security {
 	public static function is_password_expired( $user = null ) {
 		if ( is_int( $user ) ) {
 			$user_id = $user;
-		}else if ( is_a( $user, 'WP_User' ) ) {
+		} else if ( is_a( $user, 'WP_User' ) ) {
 			$user_id = $user->ID;
-		}else{
+		} else {
 			$user_id = wp_get_current_user()->ID;
 		}
 
-		if ( !get_userdata( $user_id ) ) {
+		if ( ! get_userdata( $user_id ) ) {
 			return new WP_Error( 'User does not exist', esc_html__( 'User does not exist', APS_TEXTDOMAIN ) );
 		}
 
 		$time = get_user_meta( $user_id, self::META_KEY, true );
 		$limit = self::get_limit();
-		
+
 		$expires = self::get_expiration_date( $user_id );
 
 		return ( time() > $expires );
@@ -274,15 +274,15 @@ final class Advanced_Password_Security {
 	public static function get_old_passwords( $user ) {
 		if ( is_int( $user ) ) {
 			$userObj = get_userdata( $user );
-		}else if ( is_a( $user, 'WP_User' ) ) {
+		} else if ( is_a( $user, 'WP_User' ) ) {
 			$userObj = $user;
-		}else{
+		} else {
 			$userObj = wp_get_current_user();
 		}
 
 		$used_passwords = maybe_unserialize( $userObj->data->old_user_pass );
 
-		if ( !empty( $used_passwords ) && is_array( $used_passwords ) ) {
+		if ( ! empty( $used_passwords ) && is_array( $used_passwords ) ) {
 			return $used_passwords;
 		}
 
@@ -309,9 +309,9 @@ final class Advanced_Password_Security {
 	public static function get_countdown( $user = null ) {
 		if ( is_int( $user ) ) {
 			$user_id = $user;
-		}else if ( is_a( $user, 'WP_User' ) ) {
+		} else if ( is_a( $user, 'WP_User' ) ) {
 			$user_id = $user->ID;
-		}else{
+		} else {
 			$user_id = wp_get_current_user()->ID;
 		}
 
@@ -319,7 +319,6 @@ final class Advanced_Password_Security {
 		$diff = $expires - time();
 		return floor( $diff / ( 60 * 60 * 24 ) );
 	}
-
 }
 
 if ( class_exists( 'Advanced_Password_Security' ) ) {
