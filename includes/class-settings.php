@@ -17,6 +17,51 @@ class Settings {
 		add_action( 'admin_menu', array( $this, 'submenu_page' ) );
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_counter' ), 999 );
+
+		add_filter( 'pre_update_option_' . APS::$prefix . 'settings', array( $this, 'update_option' ), 10, 2 );
+	}
+
+	public function update_option( $new_value, $old_value ) {
+		$options = get_option( APS::$prefix . 'settings' );
+		$value   = isset( $options['limit'] ) ? $options['limit'] : null;
+		
+		if ( isset( $options['log_setting_changes'] ) && $old_value !== $new_value ) {
+			$users = get_users( array( 'role' => 'administrator', 'fields' => array( 'user_email' ) ) );
+			$current_user_name = wp_get_current_user()->display_name;
+
+			$message = sprintf(
+				__(
+					'
+					<h2>This is the old configuration:</h2>
+					Day Limit: %d <br>
+					Should Save old Passwords: %s <br>
+					Should Log Settings Changes: %s <br>
+					<br><br>
+					<h2>This is the new configuration:</h2>
+					Day Limit: %d <br>
+					Should Save old Passwords: %s <br>
+					Should Log Settings Changes: %s <br>
+					',
+					APS_TEXTDOMAIN
+				),
+				$old_value['limit'],
+				$old_value['save_old_passwords'] ? __( 'Yes', APS_TEXTDOMAIN ) : __( 'No', APS_TEXTDOMAIN ),
+				$old_value['log_setting_changes'] ? __( 'Yes', APS_TEXTDOMAIN ) : __( 'No', APS_TEXTDOMAIN ),
+				$new_value['limit'],
+				$new_value['save_old_passwords'] ? __( 'Yes', APS_TEXTDOMAIN ) : __( 'No', APS_TEXTDOMAIN ),
+				$new_value['log_setting_changes'] ? __( 'Yes', APS_TEXTDOMAIN ) : __( 'No', APS_TEXTDOMAIN )
+			);
+
+			$headers = array('Content-Type: text/html; charset=UTF-8');
+			$recipients = array();
+			foreach ($users as $user) {
+				$recipients[] = $user->user_email;
+			}
+			if( wp_mail( $recipients, sprintf( __('%s changed APS settings on your Wordpress Site', APS_TEXTDOMAIN ), $current_user_name ), $message, $headers ) ) {
+				return $new_value;
+			}
+		}
+		return $new_value;
 	}
 
 	/**
@@ -132,6 +177,15 @@ class Settings {
 			APS::$prefix . 'settings_page',
 			APS::$prefix . 'settings_page_section'
 		);
+
+		add_settings_field(
+			APS::$prefix . 'settings_field_log_setting_changes',
+			esc_html__( 'Should APS store a log of setting changes?', APS_TEXTDOMAIN ),
+			array( $this, 'render_field_log_setting_changes' ),
+			APS::$prefix . 'settings_page',
+			APS::$prefix . 'settings_page_section'
+		);
+
 		add_settings_field(
 			APS::$prefix . 'settings_field_reset_all_users',
 			esc_html__( 'Reset all users password', APS_TEXTDOMAIN ),
@@ -172,6 +226,17 @@ class Settings {
 		$value   = isset( $options['save_old_passwords'] ) ? $options['save_old_passwords'] : null;
 		?>
 		<input type="checkbox" name="<?php printf( '%ssettings[save_old_passwords]', esc_attr( APS::$prefix ) ) ?>" <?php echo $value ? 'checked' : '' ?>>
+		<?php
+	}
+
+	/**
+	 * Render should log all setting changes
+	 */
+	public function render_field_log_setting_changes() {
+		$options = get_option( APS::$prefix . 'settings' );
+		$value   = isset( $options['log_setting_changes'] ) ? $options['log_setting_changes'] : null;
+		?>
+		<input type="checkbox" name="<?php printf( '%ssettings[log_setting_changes]', esc_attr( APS::$prefix ) ) ?>" <?php echo $value ? 'checked' : '' ?>>
 		<?php
 	}
 
