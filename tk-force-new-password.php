@@ -62,19 +62,9 @@ class TK_Force_New_Password {
 		add_option( 'tk_days_before_pass_reset', 30 );
 		foreach ( $this->users as $user ) {
 			if ( !get_user_meta($user->ID, 'tk_pass_last_updated', true )) {
-				add_user_meta( $user->ID, 'tk_pass_last_updated', date("Y-m-d") );				
+				add_user_meta( $user->ID, 'tk_pass_last_updated', date("Y-m-d") );
 			}
 		}
-	}
-
-	function add_settings(){
-		register_setting( 'general', 'tk_days_before_pass_reset', 'intval' );
-		add_settings_field( 'tk_force_password_days', __( 'Days Before New Password', 'tk-force-password' ), array( $this, 'setting_html_fields' ), 'general' );	
-	}
-
-	function setting_html_fields() {
-		$value = get_option( 'tk_days_before_pass_reset', '' );
-		echo '<input type="text" id="tk_force_password_days" name="tk_days_before_pass_reset" value="' . esc_attr( $value ) . '" />';
 	}
 
 	function hooks(){
@@ -123,18 +113,18 @@ class TK_Force_New_Password {
 
 	function insert_new_password_as_old( $password ){
 		global $current_user;
-		return $this->db->insert( 
-			'wp_users_pass', 
-			array( 
-				'user_id' => $current_user->ID, 
+		return $this->db->insert(
+			'wp_users_pass',
+			array(
+				'user_id' => $current_user->ID,
 				'user_pass' => $this->hasher->HashPassword( trim( $password ) ),
 				'created' => date( 'Y-m-d H:i:s' )
-			), 
-			array( 
-				'%s', 
+			),
+			array(
+				'%s',
 				'%s',
 				'%s'
-			) 
+			)
 		);
 	}
 
@@ -150,7 +140,7 @@ class TK_Force_New_Password {
 		$last_update_str = get_user_meta( $user->ID, 'tk_pass_last_updated', true );
 		$last_update_date = strtotime( $last_update_str );
 		$datediff = $now - $last_update_date;
-		return floor( $datediff / ( 60 * 60 * 24 ) );	
+		return floor( $datediff / ( 60 * 60 * 24 ) );
 	}
 
 	function login_redirect($redirect_to){
@@ -238,7 +228,7 @@ if ( !function_exists( 'wp_hash_password' ) ) {
 	        }
 	        if ( false == $tk_pass_obj->found_pass ) {
 	        	$tk_pass_obj->insert_new_password_as_old( $password );
-		 	}        	
+		 	}
         }else{
         	$tk_pass_obj->insert_new_password_as_old( $password );
         }

@@ -1,0 +1,60 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Advanced Password Security\n"
+"POT-Creation-Date: 2017-12-22 17:09-0500\n"
+"PO-Revision-Date: 2017-12-22 17:09-0500\n"
+"Last-Translator: \n"
+"Language-Team: Trew Knowledge\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.5\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: esc_html__;esc_html_e;__;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/class-aps.php:93
+msgid "Password must not have been used before."
+msgstr "A senha não pode ter sido usada anteriormente."
+
+#: includes/class-aps.php:205 tk-force-new-password.php:201
+msgid "Please change your password to be able to keep using this website."
+msgstr "Por favor mude sua senha para continuar usando esse site."
+
+#: includes/class-aps.php:206 tk-force-new-password.php:202
+msgid "Remember that you cannot use a password that you used before."
+msgstr "Lembrando que a sua senha não pode ter sido usada anteriormente."
+
+#: includes/settings/class-aps-settings.php:34
+#: includes/settings/class-aps-settings.php:35
+msgid "APS"
+msgstr "APS"
+
+#: includes/settings/views/html-admin-settings.php:11
+msgid "Advanced Password Security"
+msgstr "Advanced Password Security"
+
+#: includes/settings/views/html-admin-settings.php:29
+msgid "Roles"
+msgstr "Cargos"
+
+#: includes/settings/views/html-admin-settings.php:40
+msgid "Reset password in:"
+msgstr "Resetar senha em:"
+
+#: includes/settings/views/html-admin-settings.php:55
+msgid ""
+"Our team of dedicated professionals align themselves with your particular "
+"business goals, creating digital development, brand strategy, and customer "
+"identity management solutions that take your brand where you want it to be."
+msgstr ""
+"Nossa equipe de profissionais dedicados se alinham com os objetivos "
+"particulares da sua empresa, criando desenvolvimento digital, estratégia de "
+"marca e soluções de gerencia de identidade dos clientes que levam sua marca "
+"aonde você quer que ela vá."
+
+#: includes/settings/views/html-admin-settings.php:56
+msgid "Get in Touch"
+msgstr "Entre em contato"

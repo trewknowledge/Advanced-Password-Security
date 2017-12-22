@@ -1,0 +1,71 @@
+.tk_btn{
+  text-align: center;
+  background-color: #77be4f;
+  color: #fff !important;
+  border: none;
+  border-radius: 2px;
+  box-shadow: rgba(0,0,0,0.137255) 0px 2px 2px 0px, rgba(0,0,0,0.2) 0px 3px 1px -2px, rgba(0,0,0,0.117647) 0px 1px 5px 0px !important;
+  display: block;
+  height: 46px;
+  line-height: 46px;
+  outline: 0;
+  padding: 0 2rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .3s;
+}
+.tk_btn:hover{
+  background: #6baa46;
+}
+
+.dropzone{
+  border:1px dashed #999;
+  border-radius: 3px;
+  background: #e3e3e3;
+  margin-right: 10px;
+  padding: 5px;
+  height: 18px
+  display: inline-block;
+}
+
+.connected-sortable {
+  min-height: 40px;
+  list-style-type: none;
+  margin: 0;
+  float: left;
+  width: 100%;
+  padding: 5px 0 0 0;
+}
+
+.enabled-providers-wrapper {
+  min-width: 150px;
+  vertical-align: top !important;
+}
+
+#enabled-providers{
+  min-height: 76px;
+}
+
+.hidden-providers-wrapper{
+  background: #eee;
+  width: 230px;
+  vertical-align: top !important;
+}
+
+.connected-sortable li {
+  display: inline-block;
+  float: left;
+  margin-right: 10px;
+  padding: 5px;
+  cursor: move;
+  border-radius: 3px;
+  border: 1px solid #bbb;
+  background: center center no-repeat #f8f8f8;
+}
+
+.wp-gigya-share-bar-expand{}
+.wp-gigya-share-bar-expand ul {
+  display: none;
+}
