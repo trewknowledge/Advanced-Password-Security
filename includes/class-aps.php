@@ -78,7 +78,6 @@ class APS {
 		add_action( 'user_register', array( $this, 'profile_update' ) );
 
 		add_action( 'admin_notices', array( $this, 'pass_notice' ) );
-		add_action( 'admin_init', array( $this, 'add_settings' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_assets' ) );
 		add_action( 'woocommerce_save_account_details_errors', array( $this, 'woo_save_account' ), 10, 2 );
 	}
