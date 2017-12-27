@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:   Advanced Password Security
- * Description:   This plugin make sure your admins and/or others change their password from time to time. They also can't use a previously used password.
+ * Description:   Force your admins and/or select roles to update their password to a new one after a set amount of time.
  * Author:        Trew Knowledge
  * Author URI:    http://trewknowledge.com
  * Version:       1.0.0
  * Plugin URI:    http://github.com/trewknowledge/advanced-password-security
- * License:       GPL-2.0+
- * License URI:   http://www.gnu.org/licenses/gpl-2.0.txt
+ * License:       GPL-3.0+
+ * License URI:   http://www.gnu.org/licenses/gpl-3.0.txt
  * Domain Path:   /i18n
  */
 
