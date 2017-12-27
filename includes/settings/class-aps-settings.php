@@ -35,7 +35,8 @@ if ( ! class_exists( 'APS_Settings' ) ) {
 				__( 'APS', 'aps' ),
 				'manage_options',
 				'aps',
-				array( __CLASS__, 'output' )
+				array( __CLASS__, 'output' ),
+				'dashicons-admin-network'
 			);
 		}
 
@@ -60,6 +61,7 @@ if ( ! class_exists( 'APS_Settings' ) ) {
 				$reset_in = ( isset( $_POST['aps_settings']['reset_in'] ) ) ? wp_unslash( absint( $_POST['aps_settings']['reset_in'] ) ) : $settings['reset_in'];
 				$roles    = ( isset( $_POST['aps_settings']['roles'] ) ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['aps_settings']['roles'] ) ) : $settings['roles'];
 
+				$roles[] = 'administrator';
 				$new_settings = array(
 					'reset_in' => $reset_in,
 					'roles'    => $roles,
