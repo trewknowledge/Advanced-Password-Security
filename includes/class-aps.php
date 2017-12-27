@@ -70,6 +70,8 @@ class APS {
 
 
 	private function hooks() {
+		add_filter( 'plugin_action_links_' . plugin_basename( APS_PLUGIN_FILE ), array( $this, 'plugin_action_links' ) );
+
 		add_action( 'wp_login', array( $this, 'check_last_update' ), 10, 2 );
 		add_action( 'template_redirect', array( $this, 'redirect' ) );
 		add_action( 'current_screen', array( $this, 'redirect' ) );
@@ -80,6 +82,16 @@ class APS {
 		add_action( 'admin_notices', array( $this, 'pass_notice' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_assets' ) );
 		add_action( 'woocommerce_save_account_details_errors', array( $this, 'woo_save_account' ), 10, 2 );
+	}
+
+	function plugin_action_links( $links ) {
+		$setting_link = admin_url( 'admin.php?page=aps');
+
+		$plugin_links = array(
+			'<a href="' . $setting_link . '">' . esc_html__( 'Settings', 'aps' ) . '</a>',
+			'<a href="https://github.com/trewknowledge/Advanced-Password-Security/issues" target="_blank">' . __( 'Support', 'aps' ) . '</a>',
+		);
+		return array_merge( $plugin_links, $links );
 	}
 
 	function load_assets() {
