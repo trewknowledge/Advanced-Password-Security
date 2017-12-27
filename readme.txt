@@ -12,7 +12,7 @@ Force your administrators to update their password after a set amount of time.
 
 == Description ==
 
-This plugin forces administrators or select roles to update their password after a set amount of time has passed. They also cannot use an old password.
+Force your admins and/or select roles to update their password to a new one after a set amount of time.
 
 = Force specific roles to change their passwords =
 
