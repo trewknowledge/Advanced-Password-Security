@@ -26,6 +26,10 @@ Let's say your site has 6 admins.
 All it takes is for one of them to have a week password or not change it often for someone to figure it out or brute force it. With access to only one of your 6 admin accounts, the hacker can do whatever it wants with your data.
 By forcing admins to change their password from time to time and not allowing them to use a password they've used in the past, you add another layer of security to your data.
 
+= Privacy Policy =
+This plugin do not share any data of the site or it's users. The only data that is stored on the site database is the previously used encrypted passwords of users so they can't use those again. But that information never leaves the server where the plugin is installed and is never shared.
+We have no access to this or any other information.
+
 == Installation ==
 
 = Automatic installation =
