@@ -165,7 +165,7 @@ class APS {
 	function redirect() {
 		if ( is_admin() ) {
 			$screen = get_current_screen();
-			if ( 'profile' === $screen->base || 'plugins' === $screen->base ) {
+			if ( 'profile' === $screen->base ) {
 				return;
 			}
 		}
