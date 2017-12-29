@@ -26,13 +26,13 @@ class APS {
 	}
 
 	public static function set_password( $password ) {
-		if ( is_null( self::$pwd ) ) {
+		if ( is_empty( self::$pwd ) ) {
 			self::$pwd = $password;
 		}
 	}
 
 	public static function set_hash( $hash ) {
-		if ( is_null( self::$hashed_pass ) ) {
+		if ( is_empty( self::$hashed_pass ) ) {
 			self::$hashed_pass = $hash;
 		}
 	}
@@ -166,7 +166,7 @@ class APS {
 		$last_update_str  = get_user_meta( $user_id, 'aps_last_updated', true );
 		$last_update_date = strtotime( $last_update_str );
 		$datediff         = $now - $last_update_date;
-		return floor( $datediff / ( 60 * 60 * 24 ) );
+		return floor( $datediff / DAY_IN_SECONDS );
 	}
 
 	function login_redirect( $redirect_to ) {
