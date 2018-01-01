@@ -4,7 +4,7 @@ Tags: password, security
 Requires at least: 4.0.0
 Requires PHP: 5.5
 Tested up to: 4.9.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -62,6 +62,9 @@ How often as you'd like. By default, it is set to once a month. Just remember th
 For support requests, refer the plugin repository on [github](https://github.com/trewknowledge/Advanced-Password-Security/issues). Open a new issue and someone on our team will be happy to help.
 
 == Changelog ==
+
+= 1.0.3 - 2018-01-01 =
+* Fix typo on last update that caused the plugin not to work properly.
 
 = 1.0.2 - 2017-12-29 =
 * Fixed an issue where users could update their password to a blank one and get away with it. WP does not stop them from doing this. ( Thanks to Aires Gonçalves for pointing this out. )

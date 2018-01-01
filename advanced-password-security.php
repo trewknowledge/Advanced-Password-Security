@@ -4,7 +4,7 @@
  * Description:   Force your admins and/or select roles to update their password to a new one after a set amount of time.
  * Author:        Trew Knowledge
  * Author URI:    http://trewknowledge.com
- * Version:       1.0.2
+ * Version:       1.0.3
  * Plugin URI:    http://github.com/trewknowledge/advanced-password-security
  * License:       GPL-3.0+
  * License URI:   http://www.gnu.org/licenses/gpl-3.0.txt
