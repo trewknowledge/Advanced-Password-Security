@@ -26,13 +26,13 @@ class APS {
 	}
 
 	public static function set_password( $password ) {
-		if ( empty( self::$pwd ) ) {
+		if ( is_null( self::$pwd ) && ! empty( $password ) ) {
 			self::$pwd = $password;
 		}
 	}
 
 	public static function set_hash( $hash ) {
-		if ( empty( self::$hashed_pass ) ) {
+		if ( is_null( self::$hashed_pass ) && ! empty( $hash ) ) {
 			self::$hashed_pass = $hash;
 		}
 	}
